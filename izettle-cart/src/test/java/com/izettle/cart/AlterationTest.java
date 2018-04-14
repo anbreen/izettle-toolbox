@@ -321,8 +321,8 @@ public class AlterationTest {
 
     @Test
     /**
-     * Verifiy that a cart, after previous alterations, has the correct items (and it's quantities) available for
-     * further alterations.
+     * Verify that a cart, after previous alterations, has the correct items (and it's quantities) available for further
+     * alterations.
      */
     public void itShouldPresentCorrectRemainingItems() {
         final Object id1 = UUID.randomUUID();
@@ -350,6 +350,91 @@ public class AlterationTest {
             "Expected item with id " + id2 + " to be alterable with a quantity of 3.1415",
             new BigDecimal("3.1415"),
             alterableItems.get(id2)
+        );
+    }
+
+    @Test
+    public void itShouldPresentExpectedAlterationItemLines() {
+        //given
+        final Object id1 = UUID.randomUUID();
+        final List<TestItem> items = Arrays.asList(createItem(id1, 1L, 30f, BigDecimal.valueOf(2L)));
+        final List<TestDiscount> discounts = Arrays.asList(new TestDiscount(null, 50d, BigDecimal.ONE));
+        final Cart originalCart = new Cart(items, discounts, null);
+        final Map<Object, BigDecimal> alteration1 = Maps.newHashMap(id1, BigDecimal.ONE.negate());
+        final Map<Object, BigDecimal> alteration2 = Maps.newHashMap(id1, BigDecimal.ONE.negate());
+
+        //when
+        final AlterationCart alterationCart1 = originalCart.createAlterationCart(null, alteration1);
+        //then
+        final List<ItemLine> itemLines1 = alterationCart1.getItemLines();
+        assertEquals("Expected the first returned item to have value -1L", -1L, itemLines1.get(0).getActualValue());
+
+        //when
+        final AlterationCart alterationCart2 = originalCart.createAlterationCart(Arrays.asList(alteration1), alteration2);
+        //then
+        final List<ItemLine> itemLines2 = alterationCart2.getItemLines();
+        assertEquals("Expected the second returned item to have value -0L", 0L, itemLines2.get(0).getActualValue());
+    }
+
+    @Test
+    /**
+     * If the full quantities of all items are returned, the value should correspond to the one of the full original
+     * cart
+     */
+    public void itShouldHandleAFullReturnProperly() throws Exception {
+        //given
+        final Object id1 = UUID.randomUUID();
+        final Object id2 = UUID.randomUUID();
+        final List<TestItem> items = Arrays.asList(
+            createItem(id1, 20L, 24f, BigDecimal.valueOf(2L)),
+            createItem(id2, 10L, 12f, BigDecimal.valueOf(3L))
+        );
+        final List<TestDiscount> discounts = Arrays.asList(new TestDiscount(null, 50d, BigDecimal.ONE));
+        final Cart originalCart = new Cart(items, discounts, null);
+        final Map alteration = new HashMap<Object, BigDecimal>(){
+            {
+                put(id1, BigDecimal.valueOf(-2L));
+                put(id2, BigDecimal.valueOf(-3L));
+            }
+        };
+        //when
+        final AlterationCart alterationCart = originalCart.createAlterationCart(null, alteration);
+        //then
+        assertEquals(
+            "Expected a full return to have the same value as the original cart",
+            -originalCart.getValue(),
+            alterationCart.getValue()
+        );
+    }
+
+    @Test
+    /**
+     * If each individual item is returned, one by one, their values of the individual synthezised lines should add up
+     * to the total value of the original cart
+     */
+    public void consecutiveAlterationItemLinesShouldAddUpToTotalCartValue() throws Exception {
+        //given
+        final Object id1 = UUID.randomUUID();
+        final List<TestItem> items = Arrays.asList(createItem(id1, 1L, 30f, BigDecimal.valueOf(10L)));
+        final List<TestDiscount> discounts = Arrays.asList(new TestDiscount(null, 50d, BigDecimal.ONE));
+        final Cart originalCart = new Cart(items, discounts, null);
+        final List<Map<Object, BigDecimal>> previousAlterations = new ArrayList<Map<Object, BigDecimal>>();
+        long totValueOfReturnedItems = 0L;
+        //when
+        for (int i = 0; i < 10; i++) {
+            final Map<Object, BigDecimal> alteration = Maps.newHashMap(id1, BigDecimal.ONE.negate());
+            final AlterationCart alterationCart = originalCart.createAlterationCart(previousAlterations, alteration);
+            final List<ItemLine> itemLines = alterationCart.getItemLines();
+            final ItemLine itemLine = itemLines.get(0);
+            final long itemValue = itemLine.getActualValue();
+            totValueOfReturnedItems += itemValue;
+            previousAlterations.add(alteration);
+        }
+        //then
+        assertEquals(
+            "Expected that returning all items, one by one, would yield the same value as the original cart ",
+            -originalCart.getValue(),
+            totValueOfReturnedItems
         );
     }
 
