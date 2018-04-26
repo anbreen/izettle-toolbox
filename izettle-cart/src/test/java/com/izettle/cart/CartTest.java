@@ -641,6 +641,16 @@ public class CartTest {
         new Cart<TestItem, TestDiscount, TestDiscount, TestServiceCharge>(items, null, null);
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void itShouldThrowIllegalArgumentForEmptyDiscounts() {
+        ArrayList<TestItem> items = new ArrayList<TestItem>();
+        items.add(createItem(150800L, 0.0f, BigDecimal.ONE));
+        List<TestDiscount> discounts = new ArrayList<TestDiscount>();
+        discounts.add(new TestDiscount(null, null, BigDecimal.ONE));
+        Cart<TestItem, TestDiscount, TestDiscount, TestServiceCharge> cart
+            = new Cart<TestItem, TestDiscount, TestDiscount, TestServiceCharge>(items, discounts, null);
+    }
+
     private TestItem createItem(long unitPrice, Float vatPercentage, BigDecimal quantity, TestDiscount discount) {
         return new TestItem(UUID.randomUUID(), "", unitPrice, vatPercentage, quantity, discount);
     }
