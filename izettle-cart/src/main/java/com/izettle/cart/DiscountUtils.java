@@ -24,5 +24,10 @@ class DiscountUtils {
         if (discount.getQuantity().compareTo(BigDecimal.ZERO) == 0) {
             throw new IllegalArgumentException("Discount cannot have ZERO quantity: " + discount);
         }
+        if (discount.getAmount() == null && discount.getPercentage() == null) {
+            throw new IllegalArgumentException(
+                "Either percentage or amount needs to be present in a discount: " + discount
+            );
+        }
     }
 }
