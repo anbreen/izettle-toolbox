@@ -25,7 +25,6 @@ import java.time.Instant;
  */
 public class InstantRFC3339Module extends SimpleModule {
 
-    private static final StdDateFormat STD_DATE_FORMAT = new StdDateFormat();
     /**
      * Note: This module needs to be registered after other possible modules that might try to control `Instant`, such
      * as the JaveTimeModule.
@@ -56,7 +55,7 @@ public class InstantRFC3339Module extends SimpleModule {
         ) throws IOException {
             final String value = jp.readValueAs(String.class);
             try {
-                return STD_DATE_FORMAT.parse(value).toInstant();
+                return new StdDateFormat().parse(value).toInstant();
             } catch (ParseException e) {
                 throw new IOException(e);
             }
