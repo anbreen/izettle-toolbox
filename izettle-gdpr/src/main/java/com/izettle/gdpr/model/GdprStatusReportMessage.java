@@ -1,4 +1,4 @@
-package model;
+package com.izettle.gdpr.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

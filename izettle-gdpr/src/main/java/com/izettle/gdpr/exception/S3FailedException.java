@@ -1,4 +1,4 @@
-package model.exception;
+package com.izettle.gdpr.exception;
 
 public class S3FailedException extends RuntimeException{
 

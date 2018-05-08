@@ -1,8 +1,9 @@
-package model;
+package com.izettle.gdpr.messaging;
 
 import com.amazonaws.AmazonServiceException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.izettle.gdpr.model.GdprStatusReportMessage;
 import com.izettle.messaging.MessagePublisher;
 import com.izettle.messaging.MessagingException;
 import java.util.concurrent.CompletableFuture;

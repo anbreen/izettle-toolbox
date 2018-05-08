@@ -1,4 +1,4 @@
-package model;
+package com.izettle.gdpr.cassandra;
 
 import java.util.List;
 import lombok.Getter;

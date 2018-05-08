@@ -1,6 +1,7 @@
-package model;
+package com.izettle.gdpr.messaging;
 
-import java.util.UUID;
+import com.izettle.gdpr.model.GdprEvent;
+import com.izettle.gdpr.model.GdprStatusReportMessage;
 
 public interface GdprEventHandler {
 
@@ -11,7 +12,5 @@ public interface GdprEventHandler {
     void uploadToS3(GdprEvent event, Object data, String sequenceIdentifier);
 
     void publish(GdprStatusReportMessage status);
-
-
 
 }

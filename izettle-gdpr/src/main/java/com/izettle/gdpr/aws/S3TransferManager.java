@@ -1,4 +1,4 @@
-package model;
+package com.izettle.gdpr.aws;
 
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.model.ObjectMetadata;

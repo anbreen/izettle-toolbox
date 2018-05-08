@@ -1,4 +1,4 @@
-package model;
+package com.izettle.gdpr.model;
 
 import java.util.UUID;
 import lombok.Data;
