@@ -1,9 +1,10 @@
 package com.izettle.gdpr.messaging;
 
+import com.izettle.gdpr.exception.GdprDataNotDeleteException;
 import com.izettle.gdpr.model.GdprEvent;
 import com.izettle.gdpr.model.GdprStatusReportMessage;
 
-public interface GdprEventHandler {
+public interface GdprEventManager {
 
     void handleForget(GdprEvent event);
 
@@ -12,5 +13,7 @@ public interface GdprEventHandler {
     void uploadToS3(GdprEvent event, Object data, String sequenceIdentifier);
 
     void publish(GdprStatusReportMessage status);
+
+    void assertDataIsDeleted(GdprEvent event) throws GdprDataNotDeleteException;
 
 }

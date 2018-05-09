@@ -22,20 +22,22 @@ public class S3TransferManager {
     private static final String MAX_AGE_SECONDS = "119957";
 
     private final TransferManager transferManager;
+    private String bucket;
     private ObjectMapper objectMapper;
 
-    public S3TransferManager(TransferManager transferManager, ObjectMapper objectMapper) {
+    public S3TransferManager(TransferManager transferManager, String bucket, ObjectMapper objectMapper) {
         this.transferManager = transferManager;
+        this.bucket = bucket;
         this.objectMapper = objectMapper;
     }
 
-    public void handleUpload(String bucketName, String path, Object data)
+    public void handleUpload(String path, Object data)
         throws InterruptedException, AmazonServiceException, UnsupportedEncodingException, JsonProcessingException {
         final String dataString = objectMapper.writeValueAsString(data);
         final byte[] dataArray = dataString.getBytes("UTF-8");
         log.info("Uploading file to path=" + path);
         final Upload upload = transferManager.upload(
-            bucketName,
+            bucket,
             path,
             new ByteArrayInputStream(dataArray),
             getObjectMetadata(dataArray)

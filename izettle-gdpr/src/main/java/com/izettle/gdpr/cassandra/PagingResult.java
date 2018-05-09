@@ -1,5 +1,6 @@
 package com.izettle.gdpr.cassandra;
 
+import com.izettle.gdpr.model.GdprEvent;
 import java.util.List;
 import lombok.Getter;
 import lombok.NonNull;
@@ -10,8 +11,8 @@ public class PagingResult<T> extends Paging {
     @NonNull
     private final List<T> items;
 
-    public PagingResult(final int pagingSize, final List<T> items) {
-        super(pagingSize);
+    public PagingResult(final int pagingSize, final List<T> items, GdprEvent event) {
+        super(pagingSize, event);
         this.items = items;
     }
 
