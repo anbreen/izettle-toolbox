@@ -75,7 +75,7 @@ public class AlterationTest {
      * at one of those alterations separately would result in the same value each time. This in turn would make multiple
      * alterations add up to an amount higher or lower than the original cart. This test verifies that returning small
      * amounts will have different value each time until the entire value of the original cart is exhausted.
-    */
+     */
     public void itShouldHandleMultipleAlterationsGracefully() {
         final Object id1 = UUID.randomUUID();
         final Cart<TestItem, TestDiscount, TestDiscount, TestServiceCharge> originalCart = createCart(
@@ -217,7 +217,14 @@ public class AlterationTest {
     public void itShouldHandleFullDrainageForFixedLineItemDiscounts() {
         final Object id1 = UUID.randomUUID();
         final Cart<TestItem, TestDiscount, TestDiscount, TestServiceCharge> cart = createCart(
-            new TestItem(id1, "Main thing", 1L, 30f, BigDecimal.valueOf(1L), new TestDiscount(10L, null, BigDecimal.ONE))
+            new TestItem(
+                id1,
+                "Main thing",
+                1L,
+                30f,
+                BigDecimal.valueOf(1L),
+                new TestDiscount(10L, null, BigDecimal.ONE)
+            )
         );
         final long originalValue = cart.getValue();
         final Map<Object, BigDecimal> currentReturn = Maps.newHashMap(id1, BigDecimal.ONE.negate());
@@ -255,10 +262,10 @@ public class AlterationTest {
         final TestDiscount discount = new TestDiscount(10L, null, BigDecimal.ONE);
         final Cart<TestItem, TestDiscount, TestDiscount, TestServiceCharge> cart
             = new Cart<TestItem, TestDiscount, TestDiscount, TestServiceCharge>(
-                Arrays.asList(createItem(id, 10L, 30f, BigDecimal.valueOf(2L))),
-                Arrays.asList(discount),
-                null
-            );
+            Arrays.asList(createItem(id, 10L, 30f, BigDecimal.valueOf(2L))),
+            Arrays.asList(discount),
+            null
+        );
         final long originalValue = cart.getValue();
         final Map<Object, BigDecimal> firstAlteration = Maps.newHashMap(id, BigDecimal.ONE.negate());
         final Map<Object, BigDecimal> currentReturn = Maps.newHashMap(id, BigDecimal.ONE.negate());
@@ -281,10 +288,10 @@ public class AlterationTest {
         final TestDiscount discount = new TestDiscount(null, 20d, BigDecimal.ONE);
         final Cart<TestItem, TestDiscount, TestDiscount, TestServiceCharge> cart
             = new Cart<TestItem, TestDiscount, TestDiscount, TestServiceCharge>(
-                Arrays.asList(createItem(id, 10L, 30f, BigDecimal.valueOf(2L))),
-                Arrays.asList(discount),
-                null
-            );
+            Arrays.asList(createItem(id, 10L, 30f, BigDecimal.valueOf(2L))),
+            Arrays.asList(discount),
+            null
+        );
         final long originalValue = cart.getValue();
         final Map<Object, BigDecimal> firstAlteration = Maps.newHashMap(id, BigDecimal.ONE.negate());
         final Map<Object, BigDecimal> currentReturn = Maps.newHashMap(id, BigDecimal.ONE.negate());
@@ -303,13 +310,20 @@ public class AlterationTest {
         final Object id2 = UUID.randomUUID();
         final Cart<TestItem, TestDiscount, TestDiscount, TestServiceCharge> cart
             = new Cart<TestItem, TestDiscount, TestDiscount, TestServiceCharge>(
-                Arrays.asList(
-                    new TestItem(id1, "banan", 1000L, 30f, BigDecimal.valueOf(2L), new TestDiscount(200L, null, BigDecimal.ONE)),
-                    new TestItem(id2, "äpple", 1000L, 30f, BigDecimal.valueOf(1L), null)
+            Arrays.asList(
+                new TestItem(
+                    id1,
+                    "banan",
+                    1000L,
+                    30f,
+                    BigDecimal.valueOf(2L),
+                    new TestDiscount(200L, null, BigDecimal.ONE)
                 ),
-                Arrays.asList(new TestDiscount(600L, null, BigDecimal.ONE)),
-                null
-            );
+                new TestItem(id2, "äpple", 1000L, 30f, BigDecimal.valueOf(1L), null)
+            ),
+            Arrays.asList(new TestDiscount(600L, null, BigDecimal.ONE)),
+            null
+        );
         final Map<Object, BigDecimal> currentAlteration = Maps.newHashMap(id1, BigDecimal.ONE.negate());
         final AlterationCart<TestItem, TestDiscount, TestDiscount, TestServiceCharge> firstAlterationCart = cart
             .createAlterationCart(null, currentAlteration);
@@ -370,7 +384,8 @@ public class AlterationTest {
         assertEquals("Expected the first returned item to have value -1L", -1L, itemLines1.get(0).getActualValue());
 
         //when
-        final AlterationCart alterationCart2 = originalCart.createAlterationCart(Arrays.asList(alteration1), alteration2);
+        final AlterationCart alterationCart2 =
+            originalCart.createAlterationCart(Arrays.asList(alteration1), alteration2);
         //then
         final List<ItemLine> itemLines2 = alterationCart2.getItemLines();
         assertEquals("Expected the second returned item to have value -0L", 0L, itemLines2.get(0).getActualValue());
@@ -391,7 +406,7 @@ public class AlterationTest {
         );
         final List<TestDiscount> discounts = Arrays.asList(new TestDiscount(null, 50d, BigDecimal.ONE));
         final Cart originalCart = new Cart(items, discounts, null);
-        final Map alteration = new HashMap<Object, BigDecimal>(){
+        final Map alteration = new HashMap<Object, BigDecimal>() {
             {
                 put(id1, BigDecimal.valueOf(-2L));
                 put(id2, BigDecimal.valueOf(-3L));
