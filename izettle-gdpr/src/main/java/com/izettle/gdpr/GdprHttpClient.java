@@ -6,7 +6,6 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
-import lombok.AllArgsConstructor;
 import org.glassfish.jersey.client.JerseyClientBuilder;
 
 public class GdprHttpClient {

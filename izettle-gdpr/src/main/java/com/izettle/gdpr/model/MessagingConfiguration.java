@@ -19,6 +19,7 @@ public class MessagingConfiguration {
     @NonNull
     private final String sqsPushTopicName = "iZettleEvents";
     private final String GdprHttpServiceUrl;
-    private final String gdprSnsEndpoint; //TODO add real RTBF sns
-    private final String gdprTopicARN;//TODO add real RTBF sns´ARN
+    private final String gdprSnsEndpoint; //TODO: add real RTBF sns
+    private final String gdprTopicARN; //TODO: add real RTBF sns´ARN
+
 }
