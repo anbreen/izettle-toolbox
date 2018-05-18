@@ -42,10 +42,10 @@
         <astyanax.version>3.9.0</astyanax.version>
         <aws.version>1.11.229</aws.version>
         <bouncycastle.version>1.58</bouncycastle.version>
-        <cassandra-driver.version>3.3.0</cassandra-driver.version>
-        <cassandra-unit.version>2.2.2.1</cassandra-unit.version>
+        <cassandra-driver.version>3.4.0</cassandra-driver.version>
+        <cassandra-unit.version>3.1.1.0</cassandra-unit.version>
         <findbugs-maven-plugin.version>3.0.3</findbugs-maven-plugin.version>
-        <guava.version>19.0</guava.version>
+        <guava.version>23.0</guava.version>
         <jackson.version>2.9.2</jackson.version>
         <junit.version>4.12</junit.version>
         <maven.enforcer.plugin.version>1.4.1</maven.enforcer.plugin.version>
