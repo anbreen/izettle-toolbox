@@ -11,6 +11,8 @@ import javax.ws.rs.core.UriInfo;
 
 public class PagingUrlBuilder {
 
+    public static final String DEFAULT_PAGE_NAME = "page";
+
     protected final String pageQueryName;
     protected final UriInfo uriInfo;
     protected final HttpServletResponse response;
@@ -19,7 +21,7 @@ public class PagingUrlBuilder {
     public PagingUrlBuilder(final UriInfo uriInfo, final HttpServletResponse response) {
         this.uriInfo = requireNonNull(uriInfo, "uriInfo must not be null");
         this.response = requireNonNull(response, "response must not be null");
-        this.pageQueryName = "name";
+        this.pageQueryName = DEFAULT_PAGE_NAME;
     }
 
     public static PagingUrlBuilder create(UriInfo uriInfo, HttpServletResponse response) {
@@ -46,5 +48,13 @@ public class PagingUrlBuilder {
             final PagingUrlBuilder builder = PagingUrlBuilder.create(uriInfo, response);
             builder.queryParam(builder.pageQueryName, page.toString()).setLinkOnResponse();
         });
+    }
+
+    public static void setPageOnResponse(
+        final UriInfo uriInfo,
+        final HttpServletResponse response,
+        final PagingResult result
+    ) {
+        new PagingUrlBuilder(uriInfo, response).setPageOnResponse(result);
     }
 }
