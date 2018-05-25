@@ -29,6 +29,11 @@
 			<version>${cassandra-driver.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>com.datastax.cassandra</groupId>
+			<artifactId>cassandra-driver-mapping</artifactId>
+			<version>${cassandra-driver.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>io.dropwizard</groupId>
 			<artifactId>dropwizard-core</artifactId>
 			<version>${dropwizard.version}</version>
