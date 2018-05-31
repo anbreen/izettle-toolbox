@@ -7,7 +7,6 @@ import static org.mockito.internal.verification.VerificationModeFactory.times;
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.Session;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 public class CassandraSessionManagedTest {
     @Test

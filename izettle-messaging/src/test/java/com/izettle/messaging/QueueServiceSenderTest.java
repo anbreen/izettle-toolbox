@@ -33,7 +33,7 @@ public class QueueServiceSenderTest {
     private MessageQueueProducer<TestMessage> messageQueueProducer;
     private MessagePublisher messagePublisher;
     private AmazonSQS mockAmazonSQS = mock(AmazonSQS.class);
-    private static final String subject = "subject";
+    private static final String SUBJECT = "subject";
 
     @Before
     public final void before() throws Exception {
@@ -53,18 +53,18 @@ public class QueueServiceSenderTest {
         when(mockAmazonSQS.sendMessageBatch(any(SendMessageBatchRequest.class))).thenReturn(mock(SendMessageBatchResult.class));
         ArgumentCaptor<SendMessageBatchRequest> captor = ArgumentCaptor.forClass(SendMessageBatchRequest.class);
 
-        messagePublisher.postBatch(messageBatch(10), subject);
+        messagePublisher.postBatch(messageBatch(10), SUBJECT);
         verify(mockAmazonSQS, times(1)).sendMessageBatch(captor.capture());
         assertThat(captor.getValue().getEntries()).hasSize(10);
 
-        messagePublisher.postBatch(messageBatch(20), subject);
+        messagePublisher.postBatch(messageBatch(20), SUBJECT);
         verify(mockAmazonSQS, times(3)).sendMessageBatch(any(SendMessageBatchRequest.class));
 
-        messagePublisher.postBatch(messageBatch(11), subject);
+        messagePublisher.postBatch(messageBatch(11), SUBJECT);
         verify(mockAmazonSQS, times(5)).sendMessageBatch(captor.capture());
         assertThat(captor.getValue().getEntries()).hasSize(1);
 
-        messagePublisher.postBatch(messageBatch(9), subject);
+        messagePublisher.postBatch(messageBatch(9), SUBJECT);
         verify(mockAmazonSQS, times(6)).sendMessageBatch(captor.capture());
         assertThat(captor.getValue().getEntries()).hasSize(9);
     }
@@ -87,7 +87,7 @@ public class QueueServiceSenderTest {
         messagePublisher.postBatch(
             Arrays.asList(
                 new TestMessage("Hello"), new TestMessage("world")
-            ), "subject"
+            ), SUBJECT
         );
 
         // Assert
@@ -101,11 +101,11 @@ public class QueueServiceSenderTest {
 
         ObjectMapper mapper = new ObjectMapper();
         AmazonSNSMessage msg1 = mapper.readValue(entries.get(0).getMessageBody(), AmazonSNSMessage.class);
-        assertThat(msg1.getSubject()).isEqualTo("subject");
+        assertThat(msg1.getSubject()).isEqualTo(SUBJECT);
         assertThat(msg1.getMessage()).isEqualTo("{\"message\":\"Hello\"}");
 
         AmazonSNSMessage msg2 = mapper.readValue(entries.get(1).getMessageBody(), AmazonSNSMessage.class);
-        assertThat(msg2.getSubject()).isEqualTo("subject");
+        assertThat(msg2.getSubject()).isEqualTo(SUBJECT);
         assertThat(msg2.getMessage()).isEqualTo("{\"message\":\"world\"}");
     }
 
@@ -115,13 +115,13 @@ public class QueueServiceSenderTest {
         ArgumentCaptor<SendMessageRequest> captor = ArgumentCaptor.forClass(SendMessageRequest.class);
 
         // Act
-        messagePublisher.post(new TestMessage("Hello"), "subject");
+        messagePublisher.post(new TestMessage("Hello"), SUBJECT);
 
         // Assert
         verify(mockAmazonSQS).sendMessage(captor.capture());
         final SendMessageRequest sendMessageRequest = captor.getValue();
         AmazonSNSMessage msg = new ObjectMapper().readValue(sendMessageRequest.getMessageBody(), AmazonSNSMessage.class);
-        assertThat(msg.getSubject()).isEqualTo("subject");
+        assertThat(msg.getSubject()).isEqualTo(SUBJECT);
         assertThat(msg.getMessage()).isEqualTo("{\"message\":\"Hello\"}");
 
     }
@@ -140,7 +140,7 @@ public class QueueServiceSenderTest {
         );
 
         // Act
-        publisher.post(testMessage, "subject");
+        publisher.post(testMessage, SUBJECT);
 
         // Assert
         verify(mockAmazonSQS).sendMessage(any(SendMessageRequest.class));
