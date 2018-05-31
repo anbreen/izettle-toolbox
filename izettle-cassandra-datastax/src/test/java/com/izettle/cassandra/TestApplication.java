@@ -4,7 +4,7 @@ import io.dropwizard.Application;
 import io.dropwizard.setup.Environment;
 
 public class TestApplication extends Application<TestConfiguration> {
-    private CassandraSessionManaged cassandraSessionManaged = null;
+    private CassandraSessionManaged cassandraSessionManaged;
 
     public CassandraSessionManaged getCassandraSessionManaged() {
         return cassandraSessionManaged;

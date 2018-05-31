@@ -337,9 +337,9 @@ public class AlterationTest {
                 Arrays.asList(new TestDiscount(100L, null, BigDecimal.ONE)),
                 new TestServiceCharge(30f, 100L, 10d, BigDecimal.ONE)
             );
-            final List<Map<Object, BigDecimal>> previousAlterations = Lists.newArrayList(
-                Maps.newHashMap(id1, BigDecimal.valueOf(4).negate())
-            );
+        final List<Map<Object, BigDecimal>> previousAlterations = Lists.newArrayList(
+            Maps.newHashMap(id1, BigDecimal.valueOf(4).negate())
+        );
         final Map<Object, BigDecimal> alterableItems = originalCart.getRemainingItems(previousAlterations);
         assertEquals(
             "Expected 2 type of items to be alterable, but was " + alterableItems.size(),

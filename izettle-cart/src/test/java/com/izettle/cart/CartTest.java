@@ -526,7 +526,7 @@ public class CartTest {
         //Gives $100 - $1 - 10% -> 100 - 11% = 89, with 1% vat -> $1 VAT
         items.add(createItem(100L, 1.0f, BigDecimal.ONE, new TestDiscount(1L, 10.0d, BigDecimal.ONE)));
         //Gives $400 - $4 - 40% -> 400 - 41% = 236, with 50% VAT -> $79 VAT
-        items.add(createItem( 200L, 50.0f, BigDecimal.valueOf(2), new TestDiscount(2L, 20.0d, BigDecimal.valueOf(2))));
+        items.add(createItem(200L, 50.0f, BigDecimal.valueOf(2), new TestDiscount(2L, 20.0d, BigDecimal.valueOf(2))));
         List<TestDiscount> discounts = new ArrayList<TestDiscount>();
         //First verify the non-global discount scenario, as it's already quite complex:
         Cart<TestItem, TestDiscount, TestDiscount, TestServiceCharge> cart1 =

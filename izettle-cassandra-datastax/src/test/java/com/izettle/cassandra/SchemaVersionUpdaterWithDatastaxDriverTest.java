@@ -18,7 +18,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class SchemaVersionUpdaterWithDatastaxDriverTest {
-    final private static String TABLE_NAME = "schema_scripts_version";
+    private static final String TABLE_NAME = "schema_scripts_version";
 
     @BeforeClass
     public static void beforeClass() throws InterruptedException, IOException, TTransportException {
