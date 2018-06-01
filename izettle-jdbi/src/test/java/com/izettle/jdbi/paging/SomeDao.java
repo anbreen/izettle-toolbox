@@ -18,14 +18,13 @@ public abstract class SomeDao implements AllDao, GetHandle {
     @SqlQuery("select name from something where id = :id")
     public abstract String findNameById(@Bind("id") int id);
 
-    public void getAll(final Consumer<List<Something>> consumer) {
+    @Override
+    public void getAllStartingWith(final String prefix, final Consumer<List<Something>> consumer) {
         Query<Something> query = getHandle()
-            .createQuery("select * from something limit :limit offset :offset")
+            .createQuery("select * from something where name like :prefix")
+            .bind("prefix", prefix + "%")
             .map((i, rs, statementContext) -> new Something(rs.getString("name")));
 
-        new JDBIPagination<Something>(LIMIT)
-            .execute(query, consumer);
+        new JdbiBatchExecutor<Something>(LIMIT).execute(query, consumer);
     }
-
-    ;
 }

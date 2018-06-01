@@ -24,7 +24,11 @@ public class PostgresArrayArgumentSpec {
 
         assertTrue(LONG_FACTORY.accepts(Long.class, new SqlArray<>(Long.class, longs), mock(StatementContext.class)));
         assertFalse(LONG_FACTORY.accepts(Long.class, "shouldFail", mock(StatementContext.class)));
-        assertFalse(LONG_FACTORY.accepts(Long.class, new SqlArray<>(String.class, strings), mock(StatementContext.class)));
+        assertFalse(LONG_FACTORY.accepts(
+            Long.class,
+            new SqlArray<>(String.class, strings),
+            mock(StatementContext.class)
+        ));
     }
 
     @Test
