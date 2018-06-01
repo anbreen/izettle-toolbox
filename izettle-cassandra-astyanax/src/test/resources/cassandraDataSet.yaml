@@ -1,3 +1,0 @@
-name: timeSeriesKeyspace
-columnFamilies:
-- name: timeSeriesColumnFamily

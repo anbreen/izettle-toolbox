@@ -28,7 +28,6 @@
         <module>izettle-emv</module>
         <module>izettle-jdbi</module>
         <module>izettle-cassandra-datastax</module>
-        <module>izettle-cassandra-astyanax</module>
         <module>izettle-filters</module>
         <module>izettle-java-alb</module>
         <module>izettle-jackson</module>
@@ -38,12 +37,11 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <assertj-core.version>3.8.0</assertj-core.version>
-        <astyanax.version>3.9.0</astyanax.version>
-        <aws.version>1.11.229</aws.version>
+        <assertj-core.version>3.10.0</assertj-core.version>
+        <aws.version>1.11.337</aws.version>
         <bouncycastle.version>1.58</bouncycastle.version>
-        <cassandra-driver.version>3.4.0</cassandra-driver.version>
-        <cassandra-unit.version>3.1.1.0</cassandra-unit.version>
+        <cassandra-driver.version>3.5.0</cassandra-driver.version>
+        <cassandra-unit.version>3.3.0.2</cassandra-unit.version>
         <findbugs-maven-plugin.version>3.0.3</findbugs-maven-plugin.version>
         <guava.version>23.0</guava.version>
         <jackson.version>2.9.2</jackson.version>
@@ -51,7 +49,7 @@
         <maven.enforcer.plugin.version>1.4.1</maven.enforcer.plugin.version>
         <maven.version.range>[3.2.3,)</maven.version.range>
         <metrics.version>3.2.5</metrics.version>
-        <mockito-core.version>2.12.0</mockito-core.version>
+        <mockito-core.version>2.18.3</mockito-core.version>
         <netty.version>4.1.17.Final</netty.version>
         <slf4j.version>1.7.25</slf4j.version>
         <dropwizard.version>1.2.0</dropwizard.version>

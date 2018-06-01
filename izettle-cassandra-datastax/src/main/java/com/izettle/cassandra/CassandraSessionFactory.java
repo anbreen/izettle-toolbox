@@ -27,6 +27,12 @@ public class CassandraSessionFactory {
     private String keySpace;
 
     @JsonProperty
+    private String username;
+
+    @JsonProperty
+    private String password;
+
+    @JsonProperty
     public Set<String> getContactPoints() {
         return contactPoints;
     }
@@ -56,6 +62,14 @@ public class CassandraSessionFactory {
         this.keySpace = keySpace;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
     public CassandraSessionManaged build(Environment environment) {
         return build(environment, null);
     }
@@ -80,6 +94,7 @@ public class CassandraSessionFactory {
             .withPort(getPort())
             .withSpeculativeExecutionPolicy(new ConstantSpeculativeExecutionPolicy(1000, 2))
             .withPoolingOptions(poolingOptions)
+            .withCredentials(username, password)
             .build();
 
         cluster.getConfiguration().getCodecRegistry()

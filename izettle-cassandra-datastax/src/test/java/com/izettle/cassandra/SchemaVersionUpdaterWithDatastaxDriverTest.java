@@ -1,6 +1,7 @@
 package com.izettle.cassandra;
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.cassandraunit.utils.EmbeddedCassandraServerHelper.getSession;
 
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.KeyspaceMetadata;
@@ -10,8 +11,8 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Date;
 import org.apache.thrift.transport.TTransportException;
-import org.cassandraunit.DataLoader;
-import org.cassandraunit.dataset.yaml.ClassPathYamlDataSet;
+import org.cassandraunit.CQLDataLoader;
+import org.cassandraunit.dataset.cql.ClassPathCQLDataSet;
 import org.cassandraunit.utils.EmbeddedCassandraServerHelper;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -30,20 +31,25 @@ public class SchemaVersionUpdaterWithDatastaxDriverTest {
         EmbeddedCassandraServerHelper.cleanEmbeddedCassandra();
     }
 
-    @Test(expected = IllegalStateException.class)
-    public void dieIfTableSchemaIsIncorrect() throws IOException, URISyntaxException {
-        load("dataset-legacy.yaml");
+    @Test
+    public void shouldRunMigrationCQLs() throws IOException, URISyntaxException {
+        load("dataset-legacy.cql");
 
-        Session session = getSession();
+        Session session = getLocalSession();
         new SchemaVersionUpdaterWithDatastaxDriver(session)
             .applyFromResources(SchemaVersionUpdaterWithDatastaxDriverTest.class, "migrations");
+
+        KeyspaceMetadata keyspaceMetadata =
+            session.getCluster().getMetadata().getKeyspace(session.getLoggedKeyspace());
+        assertThat(keyspaceMetadata.getTable("galaxies")).isNotNull();
+        assertThat(keyspaceMetadata.getTable("planets")).isNotNull();
     }
 
     @Test
     public void doNotApplyScriptAlreadyApplied() throws IOException, URISyntaxException {
-        load("dataset-empty.yaml");
+        load("dataset-empty.cql");
 
-        Session session = getSession();
+        Session session = getLocalSession();
         createSchemaMigrationTable(session);
         session.execute(QueryBuilder.insertInto(TABLE_NAME)
             .value("key", "0003-before-the-big-bang.cql")
@@ -59,11 +65,11 @@ public class SchemaVersionUpdaterWithDatastaxDriverTest {
     }
 
     private void load(String dataSetLocation) {
-        DataLoader dataLoader = new DataLoader("TestCluster", "localhost:9171");
-        dataLoader.load(new ClassPathYamlDataSet(dataSetLocation));
+        CQLDataLoader dataLoader = new CQLDataLoader(getSession());
+        dataLoader.load(new ClassPathCQLDataSet(dataSetLocation, true, true, "schema_migration_test"));
     }
 
-    private static Session getSession() {
+    private static Session getLocalSession() {
         return Cluster.builder()
             .addContactPoint("127.0.0.1").withPort(9142)
             .build()

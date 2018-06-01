@@ -1,6 +1,7 @@
 package com.izettle.cassandra;
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.cassandraunit.utils.EmbeddedCassandraServerHelper.getSession;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -10,8 +11,8 @@ import io.dropwizard.lifecycle.setup.LifecycleEnvironment;
 import io.dropwizard.setup.Environment;
 import java.util.Arrays;
 import java.util.HashSet;
-import org.cassandraunit.DataLoader;
-import org.cassandraunit.dataset.yaml.ClassPathYamlDataSet;
+import org.cassandraunit.CQLDataLoader;
+import org.cassandraunit.dataset.cql.ClassPathCQLDataSet;
 import org.cassandraunit.utils.EmbeddedCassandraServerHelper;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,8 +27,8 @@ public class CassandraSessionFactoryTest {
     @Before
     public void before() throws Exception {
         EmbeddedCassandraServerHelper.startEmbeddedCassandra();
-        DataLoader dataLoader = new DataLoader("Test", "127.0.0.1:9171");
-        dataLoader.load(new ClassPathYamlDataSet("testDataSet.json"));
+        CQLDataLoader dataLoader = new CQLDataLoader(getSession());
+        dataLoader.load(new ClassPathCQLDataSet("testDataSet.cql", true, true, "skyrim"));
 
         cassandraSessionFactory.setContactPoints(new HashSet<String>(Arrays.asList("localhost")));
         cassandraSessionFactory.setPort(9142);
