@@ -14,7 +14,7 @@ import org.apache.thrift.transport.TTransportException;
 import org.cassandraunit.CQLDataLoader;
 import org.cassandraunit.dataset.cql.ClassPathCQLDataSet;
 import org.cassandraunit.utils.EmbeddedCassandraServerHelper;
-import org.junit.Before;
+import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -26,8 +26,8 @@ public class SchemaVersionUpdaterWithDatastaxDriverTest {
         EmbeddedCassandraServerHelper.startEmbeddedCassandra();
     }
 
-    @Before
-    public void before() {
+    @After
+    public void after() {
         EmbeddedCassandraServerHelper.cleanEmbeddedCassandra();
     }
 

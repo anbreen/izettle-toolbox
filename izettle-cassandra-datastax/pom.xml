@@ -9,7 +9,7 @@
 
 	<artifactId>izettle-cassandra-datastax</artifactId>
 	<properties>
-		<cassandra.version>2.2.11</cassandra.version>
+		<cassandra.version>3.11.3</cassandra.version>
 	</properties>
 
 	<dependencies>

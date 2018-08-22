@@ -1,6 +1,5 @@
 package com.izettle.cassandra;
 
-import static com.datastax.driver.core.querybuilder.QueryBuilder.eq;
 import static com.izettle.java.ResourceUtils.getBytesFromStream;
 
 import com.datastax.driver.core.ColumnMetadata;
@@ -11,7 +10,6 @@ import com.datastax.driver.core.Row;
 import com.datastax.driver.core.Session;
 import com.datastax.driver.core.Statement;
 import com.datastax.driver.core.TableMetadata;
-import com.datastax.driver.core.querybuilder.Insert;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
 import com.izettle.java.ResourceUtils;
 import java.io.File;
@@ -21,6 +19,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -58,6 +57,8 @@ public class SchemaVersionUpdaterWithDatastaxDriver {
 
     private static final Logger LOG = LoggerFactory.getLogger(SchemaVersionUpdaterWithDatastaxDriver.class);
     private static final String TABLE_NAME = "schema_scripts_version";
+    private static final String KEY_COLUMN = "key";
+    private static final String EXECUTED_COLUMN = "executed";
 
     private final Session session;
 
@@ -107,7 +108,7 @@ public class SchemaVersionUpdaterWithDatastaxDriver {
         }
 
         // Sort in ascending sequence nr order
-        Collections.sort(scripts, (a, b) -> a.sequenceNr - b.sequenceNr);
+        Collections.sort(scripts, Comparator.comparingInt(a -> a.sequenceNr));
 
         for (SchemaUpdatingScript script : scripts) {
             apply(script);
@@ -127,7 +128,7 @@ public class SchemaVersionUpdaterWithDatastaxDriver {
 
         LOG.info("Creating versioning column family.");
         session.execute(
-            "CREATE TABLE " + TABLE_NAME + " ("
+            "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " ("
                 + "key text PRIMARY KEY,"
                 + "executed timestamp"
                 + ");");
@@ -138,7 +139,7 @@ public class SchemaVersionUpdaterWithDatastaxDriver {
     private static void ensureTableSchema(TableMetadata tableMetadata) throws IllegalStateException {
         ColumnMetadata primaryKey = tableMetadata.getPrimaryKey().get(0);
 
-        if (!primaryKey.getName().equals("key")) {
+        if (!primaryKey.getName().equals(KEY_COLUMN)) {
             throw new IllegalStateException(String.format("The name of primary key in table [%s] should be 'key'", TABLE_NAME));
         }
 
@@ -146,7 +147,7 @@ public class SchemaVersionUpdaterWithDatastaxDriver {
             throw new IllegalStateException(String.format("Primary key in table [%s] should have type 'text'", TABLE_NAME));
         }
 
-        ColumnMetadata executedColumn = tableMetadata.getColumn("executed");
+        ColumnMetadata executedColumn = tableMetadata.getColumn(EXECUTED_COLUMN);
 
         if (executedColumn == null) {
             throw new IllegalStateException(String.format("Cannot find column 'executed' in table [%s]", TABLE_NAME));
@@ -158,26 +159,37 @@ public class SchemaVersionUpdaterWithDatastaxDriver {
     }
 
     private void apply(SchemaUpdatingScript script) throws IOException {
-        if (isNotApplied(script)) {
-
+        if (claimed(script)) {
             LOG.info("Applying script " + script);
             session.execute(script.readCQLContents());
-
-            Insert insert = QueryBuilder.insertInto(TABLE_NAME)
-                .value("key", script.name)
-                .value("executed", new Date());
-            session.execute(insert);
-
+            Statement update = QueryBuilder.update(TABLE_NAME)
+                .with(QueryBuilder.set(EXECUTED_COLUMN, new Date()))
+                .where(QueryBuilder.eq(KEY_COLUMN, script.name));
+            session.execute(update);
             LOG.debug("Script " + script + " successfully applied.");
+        } else {
+            Statement select = QueryBuilder.select().from(TABLE_NAME).where(QueryBuilder.eq(KEY_COLUMN, script.name));
+            ResultSet result = session.execute(select);
+            Date timestamp = result.one().getTimestamp(EXECUTED_COLUMN);
+            for (int i = 0; i < 10; i++) {
+                try {
+                    if (timestamp.getTime() > 0) {
+                        break;
+                    }
+                    Thread.sleep(1000);
+                    result = session.execute(select);
+                    timestamp = result.one().getTimestamp(EXECUTED_COLUMN);
+                } catch (InterruptedException e) {
+                    LOG.info("Interrupted...", e);
+                }
+            }
         }
     }
 
-    private boolean isNotApplied(SchemaUpdatingScript script) {
-        Statement select = QueryBuilder.select()
-            .all()
-            .from(TABLE_NAME)
-            .where(eq("key", script.name));
-        return session.execute(select).isExhausted();
+    private boolean claimed(SchemaUpdatingScript script) {
+        Statement insertIfNotExists =
+            QueryBuilder.insertInto(TABLE_NAME).value(KEY_COLUMN, script.name).value(EXECUTED_COLUMN, 0).ifNotExists();
+        return session.execute(insertIfNotExists).wasApplied();
     }
 
     private static final class SchemaUpdatingScript {

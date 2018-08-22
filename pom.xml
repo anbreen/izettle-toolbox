@@ -40,8 +40,8 @@
         <assertj-core.version>3.10.0</assertj-core.version>
         <aws.version>1.11.337</aws.version>
         <bouncycastle.version>1.58</bouncycastle.version>
-        <cassandra-driver.version>3.5.0</cassandra-driver.version>
-        <cassandra-unit.version>3.3.0.2</cassandra-unit.version>
+        <cassandra-driver.version>3.5.1</cassandra-driver.version>
+        <cassandra-unit.version>3.5.0.1</cassandra-unit.version>
         <findbugs-maven-plugin.version>3.0.3</findbugs-maven-plugin.version>
         <guava.version>23.0</guava.version>
         <jackson.version>2.9.2</jackson.version>
