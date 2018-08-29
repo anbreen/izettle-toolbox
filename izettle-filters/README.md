@@ -2,8 +2,10 @@
 
 ## AdminDirectAccess
 
-Prevents non-direct access to admin resources in Dropwizard.
-That is, requests going via a load balancer.
+Configures Dropwizard to serve admin resources from `/system` and
+prevents non-direct access (that is, requests going via a load balancer)
+to said resources.
+
 
 ### Usage
 
