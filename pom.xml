@@ -4,7 +4,7 @@
     <parent>
         <groupId>com.izettle</groupId>
         <artifactId>izettle</artifactId>
-        <version>1.20</version>
+        <version>1.22</version>
     </parent>
 
     <groupId>com.izettle.toolbox</groupId>
@@ -38,24 +38,24 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <assertj-core.version>3.10.0</assertj-core.version>
-        <aws.version>1.11.337</aws.version>
-        <bouncycastle.version>1.58</bouncycastle.version>
+        <aws.version>1.11.380</aws.version>
+        <bouncycastle.version>1.60</bouncycastle.version>
         <cassandra-driver.version>3.5.1</cassandra-driver.version>
         <cassandra-unit.version>3.5.0.1</cassandra-unit.version>
         <findbugs-maven-plugin.version>3.0.3</findbugs-maven-plugin.version>
-        <guava.version>23.0</guava.version>
-        <jackson.version>2.9.2</jackson.version>
+        <guava.version>25.1-jre</guava.version>
+        <jackson.version>2.9.6</jackson.version>
         <junit.version>4.12</junit.version>
         <maven.enforcer.plugin.version>1.4.1</maven.enforcer.plugin.version>
         <maven.version.range>[3.2.3,)</maven.version.range>
-        <metrics.version>3.2.5</metrics.version>
-        <mockito-core.version>2.18.3</mockito-core.version>
+        <metrics.version>3.2.6</metrics.version>
+        <mockito-core.version>2.21.0</mockito-core.version>
         <netty.version>4.1.17.Final</netty.version>
         <slf4j.version>1.7.25</slf4j.version>
         <dropwizard.version>1.2.0</dropwizard.version>
         <javax-ws-rs.version>2.1</javax-ws-rs.version>
         <google-truth.version>0.36</google-truth.version>
-        <javax.servlet-api.version>4.0.0</javax.servlet-api.version>
+        <javax.servlet-api.version>4.0.1</javax.servlet-api.version>
         <jersey-common.version>2.26</jersey-common.version>
     </properties>
 
