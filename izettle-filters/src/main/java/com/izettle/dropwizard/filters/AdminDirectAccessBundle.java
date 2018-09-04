@@ -12,6 +12,9 @@ public class AdminDirectAccessBundle implements Bundle {
 
     @Override
     public void initialize(Bootstrap<?> bootstrap) {
+        bootstrap.setConfigurationSourceProvider(
+            new AdminContextPathEnforcer(bootstrap.getConfigurationSourceProvider())
+        );
     }
 
     @Override
