@@ -16,6 +16,7 @@ import com.amazonaws.services.sqs.model.SendMessageRequest;
 import com.amazonaws.services.sqs.model.SendMessageResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.izettle.messaging.serialization.AmazonSNSMessage;
+import com.izettle.messaging.serialization.JsonSerializer;
 import com.izettle.messaging.serialization.MessageSerializer;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -99,7 +100,7 @@ public class QueueServiceSenderTest {
         List<SendMessageBatchRequestEntry> entries = sendMessageBatchRequest.getEntries();
         assertThat(entries.size()).isEqualTo(2);
 
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = JsonSerializer.getInstance();
         AmazonSNSMessage msg1 = mapper.readValue(entries.get(0).getMessageBody(), AmazonSNSMessage.class);
         assertThat(msg1.getSubject()).isEqualTo(SUBJECT);
         assertThat(msg1.getMessage()).isEqualTo("{\"message\":\"Hello\"}");
@@ -120,7 +121,8 @@ public class QueueServiceSenderTest {
         // Assert
         verify(mockAmazonSQS).sendMessage(captor.capture());
         final SendMessageRequest sendMessageRequest = captor.getValue();
-        AmazonSNSMessage msg = new ObjectMapper().readValue(sendMessageRequest.getMessageBody(), AmazonSNSMessage.class);
+        AmazonSNSMessage msg = JsonSerializer.getInstance()
+            .readValue(sendMessageRequest.getMessageBody(), AmazonSNSMessage.class);
         assertThat(msg.getSubject()).isEqualTo(SUBJECT);
         assertThat(msg.getMessage()).isEqualTo("{\"message\":\"Hello\"}");
 
