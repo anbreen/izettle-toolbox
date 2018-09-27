@@ -2,6 +2,7 @@ package com.izettle.java;
 
 import static com.izettle.java.ValueChecks.empty;
 
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
@@ -150,7 +151,7 @@ public final class UUIDFactory {
             return Base64.b64StringToByteArr(uuid);
             // We assume that the supplied string is already Base64 encoded
         } else {
-            return uuid.getBytes();
+            return uuid.getBytes(StandardCharsets.UTF_8);
         }
     }
 
