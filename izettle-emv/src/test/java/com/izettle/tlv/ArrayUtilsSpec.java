@@ -1,6 +1,6 @@
 package com.izettle.tlv;
 
-import static com.izettle.tlv.ArrayUtils.concat;
+import static com.izettle.java.ArrayUtils.concat;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertNull;
 

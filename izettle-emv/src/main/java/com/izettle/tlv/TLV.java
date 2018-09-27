@@ -2,6 +2,7 @@ package com.izettle.tlv;
 
 import static java.util.Objects.requireNonNull;
 
+import com.izettle.java.ArrayUtils;
 import java.util.Arrays;
 
 public class TLV {
