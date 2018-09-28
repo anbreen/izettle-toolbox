@@ -21,6 +21,8 @@ import java.math.BigDecimal;
  */
 public class BigDecimalModule extends SimpleModule {
 
+    private static final long serialVersionUID = 4920995144993224777L;
+
     public BigDecimalModule() {
         super();
         addDeserializer(BigDecimal.class, new BigDecimalDeserializer());
