@@ -59,44 +59,6 @@
         <jersey-common.version>2.26</jersey-common.version>
     </properties>
 
-    <profiles>
-
-        <profile>
-            <id>static-analysis</id>
-            <build>
-                <plugins>
-                    <!-- FindBugs Static Analysis -->
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>findbugs-maven-plugin</artifactId>
-                        <version>${findbugs-maven-plugin.version}</version>
-                        <configuration>
-                            <effort>Max</effort>
-                            <threshold>Exp</threshold>
-                            <xmlOutput>true</xmlOutput>
-                            <failOnError>true</failOnError>
-                            <plugins>
-                                <!-- Add the security plugin from http://find-sec-bugs.github.io/ -->
-                                <plugin>
-                                    <groupId>com.h3xstream.findsecbugs</groupId>
-                                    <artifactId>findsecbugs-plugin</artifactId>
-                                    <version>LATEST</version> <!-- Auto-update to the latest stable -->
-                                </plugin>
-                            </plugins>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>check</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
-
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
