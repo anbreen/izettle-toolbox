@@ -25,6 +25,8 @@ import java.time.Instant;
  */
 public class InstantRFC3339Module extends SimpleModule {
 
+    private static final long serialVersionUID = -6510877373217475140L;
+
     /**
      * Note: This module needs to be registered after other possible modules that might try to control `Instant`, such
      * as the JaveTimeModule.

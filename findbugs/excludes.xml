@@ -1,0 +1,101 @@
+<FindBugsFilter>
+	<Match>
+		<Class name="com.izettle.java.Base64" />
+		<Method name="b64StringToByteArr" params="java.lang.String" returns="byte[]"/>
+		<Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS" />
+	</Match>
+	<Match>
+		<Class name="com.izettle.java.Base64" />
+		<Method name="b64StringToByteArr" params="java.lang.String" returns="byte[]"/>
+		<Bug pattern="SF_SWITCH_NO_DEFAULT" />
+	</Match>
+	<Match>
+		<Class name="com.izettle.java.Base64" />
+		<Method name="byteArrToB64String" params="byte[]" returns="java.lang.String"/>
+		<Bug pattern="SF_SWITCH_NO_DEFAULT" />
+	</Match>
+	<Match>
+		<Class name="com.izettle.java.Bits" />
+		<Method name="toBitArray" params="byte[]" returns="boolean[]"/>
+		<Bug pattern="BIT_SIGNED_CHECK" />
+	</Match>
+	<Match>
+		<Bug pattern="URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD" />
+	</Match>
+	<Match>
+		<Class name="com.izettle.java.Hex" />
+		<Method name="hexToByteArray" params="java.lang.String" returns="byte[]"/>
+		<Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS" />
+	</Match>
+	<Match>
+		<Class name="com.izettle.tlv.Hex" />
+		<Method name="hexToByteArray" params="java.lang.String" returns="byte[]"/>
+		<Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS" />
+	</Match>
+	<Match>
+		<Class name="com.izettle.java.ArrayUtils" />
+		<Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS" />
+	</Match>
+	<Match>
+		<Class name="com.izettle.java.ResourceUtils" />
+		<Method name="getResourceAsBytes" params="java.lang.Class, java.lang.String" returns="byte[]"/>
+		<Bug pattern="URLCONNECTION_SSRF_FD" />
+	</Match>
+	<Match>
+		<Class name="com.izettle.java.ResourceUtils" />
+		<Method name="getResourceAsStream" params="java.lang.Class, java.lang.String" returns="java.io.InputStream"/>
+		<Bug pattern="URLCONNECTION_SSRF_FD" />
+	</Match>
+	<Match>
+		<Class name="com.izettle.cassandra.SchemaVersionUpdaterWithDatastaxDriver$SchemaUpdatingScript" />
+		<Bug pattern="URLCONNECTION_SSRF_FD" />
+	</Match>
+	<Match>
+		<Class name="com.izettle.java.ResourceUtils$ResourceLoader" />
+		<Method name="getBytesFromResource" params="java.lang.String" returns="byte[]"/>
+		<Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE" />
+	</Match>
+	<Match>
+		<Class name="com.izettle.cassandra.paging.PagingInput" />
+		<Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE" />
+	</Match>
+	<Match>
+		<Bug pattern="REC_CATCH_EXCEPTION" />
+	</Match>
+	<Match>
+		<Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON" />
+	</Match>
+	<Match>
+		<Bug pattern="CRLF_INJECTION_LOGS" />
+	</Match>
+	<Match>
+		<Bug pattern="RV_RETURN_VALUE_IGNORED_BAD_PRACTICE" />
+	</Match>
+	<Match>
+		<Bug pattern="DM_DEFAULT_ENCODING" />
+	</Match>
+	<Match>
+		<Bug pattern="EI_EXPOSE_REP2" />
+	</Match>
+	<Match>
+		<Bug pattern="SE_NO_SERIALVERSIONID" />
+	</Match>
+	<Match>
+		<Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE" />
+	</Match>
+	<Match>
+		<Bug pattern="UWF_NULL_FIELD" />
+	</Match>
+	<Match>
+		<Bug pattern="NP_NULL_PARAM_DEREF_NONVIRTUAL" />
+	</Match>
+	<Match>
+		<Bug pattern="HTTP_RESPONSE_SPLITTING" />
+	</Match>
+	<Match>
+		<Bug pattern="SERVLET_HEADER" />
+	</Match>
+	<Match>
+		<Bug pattern="DLS_DEAD_LOCAL_STORE" />
+	</Match>
+</FindBugsFilter>

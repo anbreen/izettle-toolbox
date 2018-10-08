@@ -16,6 +16,8 @@ import java.util.UUID;
  */
 public class UUIDModule extends SimpleModule {
 
+    private static final long serialVersionUID = 5951468440236663410L;
+
     public UUIDModule() {
         super();
         addDeserializer(UUID.class, new UUIDDeserializer());
