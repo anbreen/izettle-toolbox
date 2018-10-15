@@ -4,7 +4,7 @@
     <parent>
         <groupId>com.izettle</groupId>
         <artifactId>izettle</artifactId>
-        <version>1.24</version>
+        <version>1.25</version>
     </parent>
 
     <groupId>com.izettle.toolbox</groupId>
@@ -21,6 +21,7 @@
 
     <modules>
         <module>izettle-java</module>
+        <module>izettle-kotlin</module>
         <module>izettle-messaging</module>
         <module>izettle-cryptography</module>
         <module>izettle-cassandra</module>
