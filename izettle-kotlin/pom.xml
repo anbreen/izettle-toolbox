@@ -5,11 +5,11 @@
     <parent>
         <groupId>com.izettle.toolbox</groupId>
         <artifactId>izettle-toolbox</artifactId>
-        <version>1.0.122</version>
+        <version>1.0.123-SNAPSHOT</version>
     </parent>
 
     <artifactId>izettle-kotlin</artifactId>
-    <version>1.0.122</version>
+    <version>1.0.123-SNAPSHOT</version>
 
     <properties>
         <kotlin.version>1.2.71</kotlin.version>
@@ -20,7 +20,7 @@
         <dependency>
             <groupId>com.izettle.toolbox</groupId>
             <artifactId>izettle-java</artifactId>
-            <version>1.0.122</version>
+            <version>1.0.123-SNAPSHOT</version>
         </dependency>
 
         <dependency>
