@@ -1,5 +1,7 @@
 package com.izettle.java;
 
+import static com.izettle.java.CurrencyFormatter.MINUS_SIGN;
+import static com.izettle.java.CurrencyFormatter.NBSP;
 import static com.izettle.java.CurrencyFormatter.format;
 import static com.izettle.java.CurrencyFormatter.parse;
 import static com.izettle.java.CurrencyId.EUR;
@@ -21,7 +23,7 @@ public class CurrencyFormatterTest {
 
     @Test
     public void itShouldParseFullformatCorrectly() throws Exception {
-        assertEquals(10000L, parse(SEK, LOCALE_SE, "100,00 kr"));
+        assertEquals(10000L, parse(SEK, LOCALE_SE, "100,00" + NBSP + "kr"));
         assertEquals(10000L, parse(SEK, LOCALE_SE, "100,00 kr"));
         assertEquals(0L, parse(SEK, LOCALE_SE, "0,00 kr"));
         assertEquals(-100L, parse(SEK, LOCALE_SE, "-1,00 kr"));
@@ -32,12 +34,12 @@ public class CurrencyFormatterTest {
         assertEquals(-25L, parse(SEK, LOCALE_SE, "-0,25 kr"));
         assertEquals(10000025L, parse(EUR, LOCALE_SE, "100 000,25 €"));
         assertEquals(0L, parse(EUR, Locale.UK, "€0.00"));
-        assertEquals(0L, parse(EUR, Locale.US, "EUR0.00"));
-        assertEquals(-100L, parse(EUR, Locale.US, "(EUR1.00)"));
+        assertEquals(0L, parse(EUR, Locale.US, "€0.00"));
+        assertEquals(-100L, parse(EUR, Locale.US, "-€1.00"));
         assertEquals(-10000000L, parse(EUR, Locale.UK, "-€100,000.00"));
         assertEquals(-10000025L, parse(EUR, Locale.UK, "-€100,000.25"));
-        assertEquals(25L, parse(EUR, Locale.US, "EUR0.25"));
-        assertEquals(-25L, parse(EUR, Locale.US, "(EUR0.25)"));
+        assertEquals(25L, parse(EUR, Locale.US, "€0.25"));
+        assertEquals(-25L, parse(EUR, Locale.US, "-€0.25"));
     }
 
     private static final Set<CurrencyId> VALID_CURRENCIES = EnumSet.complementOf(EnumSet.of(
@@ -74,22 +76,22 @@ public class CurrencyFormatterTest {
 
     @Test
     public void itShouldFormatFractionizedAmount() throws Exception {
-        assertEquals("100,00 kr", format(SEK, LOCALE_SE, 10000));
-        assertEquals("0,00 kr", format(SEK, LOCALE_SE, -0));
-        assertEquals("-1,00 kr", format(SEK, LOCALE_SE, -100));
-        assertEquals("-100 000,00 kr", format(SEK, LOCALE_SE, -10000000));
-        assertEquals("-100 000,25 kr", format(SEK, LOCALE_SE, -10000025));
-        assertEquals("100 000,25 kr", format(SEK, LOCALE_SE, 10000025));
-        assertEquals("0,25 kr", format(SEK, LOCALE_SE, 25));
-        assertEquals("-0,25 kr", format(SEK, LOCALE_SE, -25));
-        assertEquals("100 000,25 €", format(EUR, LOCALE_SE, 10000025));
+        assertEquals("100,00" + NBSP + "kr", format(SEK, LOCALE_SE, 10000));
+        assertEquals("0,00" + NBSP + "kr", format(SEK, LOCALE_SE, -0));
+        assertEquals(MINUS_SIGN + "1,00" + NBSP + "kr", format(SEK, LOCALE_SE, -100));
+        assertEquals(MINUS_SIGN + "100 000,00" + NBSP + "kr", format(SEK, LOCALE_SE, -10000000));
+        assertEquals(MINUS_SIGN + "100 000,25" + NBSP + "kr", format(SEK, LOCALE_SE, -10000025));
+        assertEquals("100 000,25" + NBSP + "kr", format(SEK, LOCALE_SE, 10000025));
+        assertEquals("0,25" + NBSP + "kr", format(SEK, LOCALE_SE, 25));
+        assertEquals(MINUS_SIGN + "0,25" + NBSP + "kr", format(SEK, LOCALE_SE, -25));
+        assertEquals("100 000,25" + NBSP + "€", format(EUR, LOCALE_SE, 10000025));
         assertEquals("€0.00", format(EUR, Locale.UK, 0));
-        assertEquals("EUR0.00", format(EUR, Locale.US, -0));
-        assertEquals("(EUR1.00)", format(EUR, Locale.US, -100));
+        assertEquals("€0.00", format(EUR, Locale.US, -0));
+        assertEquals("-€1.00", format(EUR, Locale.US, -100));
         assertEquals("-€100,000.00", format(EUR, Locale.UK, -10000000));
         assertEquals("-€100,000.25", format(EUR, Locale.UK, -10000025));
-        assertEquals("EUR0.25", format(EUR, Locale.US, 25));
-        assertEquals("(EUR0.25)", format(EUR, Locale.US, -25));
+        assertEquals("€0.25", format(EUR, Locale.US, 25));
+        assertEquals("-€0.25", format(EUR, Locale.US, -25));
     }
 
     @Test

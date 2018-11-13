@@ -1,11 +1,19 @@
 package com.izettle.java;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Currency;
 import java.util.Locale;
 
 public class CurrencyFormatter {
+
+    protected static final char NBSP = '\u00a0';
+    protected static final char SPACE = ' ';
+    protected static final char MINUS_SIGN = '\u2212';
+    protected static final char HYPHEN = '-';
 
     /**
      * Will return the amount represented in the currency's minimal value, eg fractionized amount.
@@ -36,12 +44,35 @@ public class CurrencyFormatter {
      * @return the fractionized amount
      * @throws ParseException If the string is not parseable as a number
      */
-    public static long parse(CurrencyId currencyId, Locale locale, String amount) throws ParseException {
-        Currency currency = Currency.getInstance(currencyId.name());
-        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
+    public static long parse(
+        final CurrencyId currencyId,
+        final Locale locale,
+        final String amount
+    ) throws ParseException {
+        final Currency currency = Currency.getInstance(currencyId.name());
+        final DecimalFormat currencyFormatter = (DecimalFormat) NumberFormat.getCurrencyInstance(locale);
         currencyFormatter.setCurrency(currency);
-        Number numericValue = currencyFormatter.parse(amount);
-        return Math.round(numericValue.doubleValue() * StrictMath.pow(10, currency.getDefaultFractionDigits()));
+        final char groupingSeparator = currencyFormatter.getDecimalFormatSymbols().getGroupingSeparator();
+        final char minusSign = currencyFormatter.getDecimalFormatSymbols().getMinusSign();
+        final String currencySymbol = currencyFormatter.getDecimalFormatSymbols().getCurrencySymbol();
+        String toParse = amount;
+        if (HYPHEN == minusSign) {
+            toParse = toParse.replace(MINUS_SIGN, HYPHEN);
+        }
+        if (MINUS_SIGN == minusSign) {
+            toParse = toParse.replace(HYPHEN, MINUS_SIGN);
+        }
+        if (SPACE == groupingSeparator && currencySymbol.indexOf(NBSP) < 0) {
+            toParse = toParse.replace(NBSP, SPACE);
+        }
+        if (NBSP == groupingSeparator && currencySymbol.indexOf(SPACE) < 0) {
+            toParse = toParse.replace(SPACE, NBSP);
+        }
+        final Number numericValue = currencyFormatter.parse(toParse);
+        return new BigDecimal(numericValue.doubleValue())
+            .movePointRight(currency.getDefaultFractionDigits())
+            .setScale(0, RoundingMode.HALF_UP)
+            .longValueExact();
     }
 
     /**
